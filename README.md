@@ -9,3 +9,5 @@ Firstly, we calculate the weighted average of the degree grade for each departme
 ![Boxplot](boxplot.png)
 
 ![Time Series](time_evolution.png)
+
+Anyone is welcome to do something similar for the years it takes for students to graduate (the data can be found here in an easy to handle form or at the above link in a more difficult to handle form) and/or add something to the existing work that studies the average degree grades.
