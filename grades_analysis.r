@@ -124,6 +124,38 @@ boxplot(percentiles[1, 2:1000], percentiles[2, 2:1000], percentiles[3, 2:1000],
         names = c("DEOS", "OIK", "DET", "M&E", "ODE", "LOXRI", 
                   "CS", "STAT", "AUEB"), cex.axis = 0.8)
 
+# create a vector with AUEB's final grade per year
+years <- c(2016, 2017, 2018, 2019, 2020)
+aueb_avgs <- c()
+for(i in years){
+  temp_grades <- grades[grades$year==i,]
+  temp_avg <- weighted.mean(temp_grades$avg_grade, temp_grades$year_grads)
+  aueb_avgs <- c(aueb_avgs, temp_avg)
+}
+
+# And now a dataframe with the mean per year for all departments and for AUEB
+# Each department and AUEB will be a column in this new dataframe
+# Comment the lines corresponding to the department you want to ommit
+# Be careful when you comment the final line
+year_evol <- data.frame(time = years, 
+                        CS = grades[grades$department=="CS",]$avg_grade, 
+#                        DEOS = grades[grades$department=="DEOS",]$avg_grade, 
+                        DET = grades[grades$department=="DET",]$avg_grade, 
+                        LOXRI = grades[grades$department=="LOXRI",]$avg_grade,
+#                        ME = grades[grades$department=="M&E",]$avg_grade,
+                        ODE = grades[grades$department=="ODE",]$avg_grade,
+#                        OIK = grades[grades$department=="OIK",]$avg_grade,
+#                        STAT = grades[grades$department=="STAT",]$avg_grade,
+                        AUEB = aueb_avgs)
+# And now plot the results
+require(ggplot2)
+require(reshape2)
+year_evol <- melt(year_evol ,  id.vars = 'time', variable.name = 'departments')
+p <- ggplot(year_evol, aes(time,value)) + geom_line(aes(colour = departments), size=1.2)
+p + labs(title = "Evolution of average grades", 
+       x = "Year of graduation", 
+       y = "Average grade")
+
 # After running all the above script you can experiment 
 # with commands like the following:
 cdf_of_grades(8, "CS")
